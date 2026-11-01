@@ -1,23 +1,27 @@
 x-common:
   panel:
     &panel-environment
-    APP_URL: "https://localhost" # can be set to 'http://localhost' on port 80 only
-    LE_EMAIL: "USEYOUROWNEMAILHERE@example.com" # email to be used for let's encrypt certificates
+    APP_NAME: "STX Enterprises"
+    APP_URL: "http://localhost" # can be set to 'http://localhost' on port 80 only
+    LE_EMAIL: "admin@stxenterprises.lk" # email to be used for let's encrypt certificates
     APP_DEBUG: "false"
     APP_ENV: "production"
+    APP_INSTALLED: "true"
 
     # BEHIND_PROXY: true # uncomment to run behind a proxy
     # TRUSTED_PROXIES: 127.0.0.1,172.17.0.1,172.20.0.1 # defaults are for local proxies
 
   mail:
     &mail-environment
-    MAIL_DRIVER: "log"
-    # MAIL_HOST: ""
-    # MAIL_PORT: ""
-    # MAIL_FROM: ""
-    # MAIL_USERNAME: ""
-    # MAIL_PASSWORD: ""
-    # MAIL_SCHEME: ""
+    MAIL_MAILER: "smtp"
+    MAIL_DRIVER: "smtp"
+    MAIL_HOST: "${MAIL_HOST:-smtp.mailgun.org}"
+    MAIL_PORT: "${MAIL_PORT:-587}"
+    MAIL_FROM: "${MAIL_FROM:-billing@stxenterprises.lk}"
+    MAIL_FROM_NAME: "STX Enterprises"
+    MAIL_USERNAME: "${MAIL_USERNAME:-}"
+    MAIL_PASSWORD: "${MAIL_PASSWORD:-}"
+    MAIL_ENCRYPTION: "${MAIL_ENCRYPTION:-tls}"
 
   database:
     &db-environment
@@ -69,11 +73,13 @@ services:
     volumes:
       - pelican-data:/pelican-data
       - pelican-logs:/var/www/html/storage/logs
-      - type: volume
-        source: pelican-data
-        target: /var/www/html/plugins
-        volume:
-          subpath: plugins
+      - ./plugins:/var/www/html/plugins
+      - ./resources/views/filament/layouts/footer.blade.php:/var/www/html/resources/views/filament/layouts/footer.blade.php
+      - ./app/Providers/Filament/FilamentServiceProvider.php:/var/www/html/app/Providers/Filament/FilamentServiceProvider.php
+      - ./app/Filament/Admin/Widgets:/var/www/html/app/Filament/Admin/Widgets
+      - ./app/Filament/Admin/Pages/Dashboard.php:/var/www/html/app/Filament/Admin/Pages/Dashboard.php
+      - ./resources/views/filament/widgets:/var/www/html/resources/views/filament/widgets
+      - ./lang/en/admin/dashboard.php:/var/www/html/lang/en/admin/dashboard.php
     environment:
       <<: [*panel-environment, *mail-environment]
       XDG_DATA_HOME: /pelican-data
@@ -98,4 +104,4 @@ networks:
   default:
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.28.0.0/16

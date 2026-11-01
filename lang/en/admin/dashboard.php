@@ -35,8 +35,8 @@ return [
             'button_label' => 'Create first Node',
         ],
         'intro-support' => [
-            'heading' => 'Support Pelican',
-            'content' => 'Thank you for using Pelican, this could only be achieved through the support of you, our contributors, and the rest of our supporters!',
+            'heading' => 'Support STX Enterprises',
+            'content' => 'Thank you for using STX Enterprises, engineered for ultra-fast low latency gaming and cloud orchestration.',
             'extra_note' => 'We appreciate any and all support from anybody.',
             'button_translate' => 'Help Translate',
             'button_donate' => 'Donate Directly',

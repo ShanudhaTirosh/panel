@@ -14,7 +14,7 @@ class ServerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = TablerIcon::BrandDocker;
 
-    protected static ?string $slug = '/';
+    protected static ?string $slug = 'servers';
 
     protected static bool $shouldRegisterNavigation = false;
 
